@@ -1,70 +1,39 @@
-class Item:
-"""Base class demonstrating inheritance foundations."""
+import random
 
-def __init__(self, title, unique_id):
-self.title = title
-self.unique_id = unique_id
-self.is_available = True
-
-class Book(Item):
-
-"""Subclass inheriting from Item."""
-
-def __init__(self, title, unique_id, author, isbn):
-super().__init__(title, unique_id)
-self.author = author
-self.isbn = isbn
-
-class Library:
-def __init__(self):
-self.catalog = {}
-
-def add_book(self, book):
-self.catalog[book.unique_id] = book
-print(f"Added book to catalog: '{book.title}' by {book.author}")
-
-def issue_book(self, unique_id, student_name):
-if unique_id not in self.catalog:
-
-print("Error: Book code not found in directory.")
+def simulate_dice_rolls(number_of_dice, total_rolls): if
+number_of_dice < 1 or total_rolls < 1:
+print("Invalid Parameters: Input parameters must be greater than zero.")
 return
-book = self.catalog[unique_id]
 
-# Check book availability condition
-if not book.is_available:
-print(f"Unavailable: '{book.title}' is already checked out.")
-return
-book.is_available = False
-print(f"Success: '{book.title}' checked out to {student_name}.")
+# Initialize empty frequency tracking dictionary results_frequency =
+{}
 
-def return_book(self, unique_id):
-if unique_id not in self.catalog:
-print("Error: Book code not found in directory.")
-return
-book = self.catalog[unique_id]
+# Calculate analytical bounds min_possible =
+number_of_dice max_possible = number_of_dice * 6
+for score in range(min_possible, max_possible + 1):
+results_frequency[score] = 0
 
-if book.is_available:
+print(f"Simulating {total_rolls} trials rolling {number_of_dice} dice...")
 
-print(f"Notice: '{book.title}' is already present in the library.")
-return
-book.is_available = True
-print(f"Success: '{book.title}' has been successfully returned.")
+# Execute simulation loop for _ in
+range(total_rolls):
+current_roll_total = 0 for _ in
+range(number_of_dice):
+# Choose uniform random integers from 1 to 6 inclusive
+current_roll_total += random.randint(1, 6)
 
-# --- Test Cases & Simulation ---
-print("\n=== Library Management Simulation ===")
-lib = Library()
+results_frequency[current_roll_total] += 1
+# Print summary evaluation print(f"\n{'Outcome Summary':<16} | {'Raw Counts':<12} |
+{'Observed Probability'}") print("-" * 55) for score, count in results_frequency.items():
+percentage = (count / total_rolls) * 100 print(f"Score {score:<10} | {count:<12} |
+{percentage:.2f}%")
 
-# Instantiate books
-b1 = Book("Python Crash Course", "B01", "Eric Matthes", "567-1593279288")
-b2 = Book("Introduction to Algorithms", "B02", "CLRS", "567-0262046305")
+return results_frequency
 
-# Build inventory
-lib.add_book(b1)
-lib.add_book(b2)
+# --- Test Cases & Simulation Run --print("\n===
+Probability Experiment System ===")
+# Experiment 1: Roll a single die 1000 times (Expect an even distribution)
+simulate_dice_rolls(number_of_dice=1, total_rolls=1000)
 
-# Simulate issue/return transactions
-print("\n--- Testing Transactions ---")
-lib.issue_book("B01", "nithya")
-lib.issue_book("B01", "lohit") # Test double-issue block
-lib.return_book("B01")
-lib.issue_book("B01", "lohit") # Test issue after return
+# Experiment 2: Roll two dice 5000 times (Expect a bell curve centered around 7)
+simulate_dice_rolls(number_of_dice=2, total_rolls=5000)
