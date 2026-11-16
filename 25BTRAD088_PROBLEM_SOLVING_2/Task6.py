@@ -1,1 +1,1 @@
-
+print("Name\tAge\tCity")
